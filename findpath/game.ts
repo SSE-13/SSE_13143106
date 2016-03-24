@@ -38,9 +38,9 @@ module game {
                         context.fillRect(i * GRID_PIXEL_WIDTH, j * GRID_PIXEL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT);
                         context.fillStyle = '#000000';
                     }else{
-                        context.fillStyle = '#0000FF';
                         context.fillRect(i * GRID_PIXEL_WIDTH, j * GRID_PIXEL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT);
                         context.strokeRect(i * GRID_PIXEL_WIDTH, j * GRID_PIXEL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT);
+                        context.fillStyle = '#0000FF';
                 }
             }
             context.closePath();
@@ -60,21 +60,34 @@ module game {
     }
 
     export class BoyBody extends Body {
-
+        public _Position = new Array(2);
+        public _Step = 1;
+        public Path : astar.AStar;
 
         public run(grid) {
+            for(var i =0; i< 2 ; i++){
+                this._Position[i] = new Array;
+            }
             grid.setStartNode(0, 0);
             grid.setEndNode(10, 8);
-            var findpath = new astar.AStar();
-            findpath.setHeurisitic(findpath.diagonal);
-            var result = findpath.findPath(grid);
-            var path = findpath._path;
-            console.log(path);
-            console.log(grid.toString());
+            this.Path = new astar.AStar();
+            this.Path.setHeurisitic(this.Path.diagonal);
+            var result = this.Path.findPath(grid);
+            var Path = this.Path._path;
+            for(var i = 1; i<this.Path._path.length;i++){
+                this._Position[0][i] = this.Path._path[i].x - this.Path._path[i-1].x;
+                this._Position[1][i] = this.Path._path[i].y - this.Path._path[i-1].y;
+            }
         }
 
         public onTicker(duringTime) {
-
+            if(this.x<NUM_ROWS *GRID_PIXEL_WIDTH &&this.y<NUM_COLS*GRID_PIXEL_HEIGHT){
+                if(this._Step <= this.Path._path.length){
+                    this.x += this._Position[0][this._Step]*GRID_PIXEL_WIDTH;
+                    this.y += this._Position[1][this._Step]*GRID_PIXEL_HEIGHT;
+                    this._Step++; 
+                }
+            }
         }
     }
 }
@@ -92,4 +105,6 @@ var renderCore = new RenderCore();
 renderCore.start([world, boyShape]);
 
 var ticker = new Ticker();
+body.vx = 5;
+body.vy = 10;
 ticker.start([body]);
