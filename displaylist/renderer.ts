@@ -42,8 +42,8 @@ module render {
             }
             else {
                 //TODO:
-                // GLOBAL_MATRIX = PARENT_GLOBAL_MATRIX * LOCAL_MATRIX
-                this.globalMatrix = localMatrix;
+                // GLOBAL_MATRIX = LOCAL_MATRIX * PARENT_GLOBAL_MATRIX
+                this.globalMatrix = matrixAppendMatrix(localMatrix,parent.globalMatrix);//子本地乘父全局
             }
 
 
