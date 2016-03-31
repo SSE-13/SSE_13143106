@@ -43,7 +43,8 @@ module render {
             else {
                 //TODO:
                 // GLOBAL_MATRIX = LOCAL_MATRIX * PARENT_GLOBAL_MATRIX
-                this.globalMatrix = matrixAppendMatrix(localMatrix,parent.globalMatrix);//子本地乘父全局
+               var parentGlobelMatrix=this.parent.globalMatrix;
+               this.globalMatrix.transformToGlobel(localMatrix,parentGlobelMatrix);
             }
 
 
