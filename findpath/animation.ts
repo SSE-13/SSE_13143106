@@ -17,6 +17,7 @@ class Ticker {
         var self = this;
         setInterval(this.onTicker.bind(this), 1000 / 60);
     }
+    
 
     onTicker() {
         var currentTime = Date.now();
