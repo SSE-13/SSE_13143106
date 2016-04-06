@@ -79,6 +79,7 @@ class Body {
         if (this.x + this.width < BOUNDS_LEFT) {
             this.vx = -1 * this.vx;
         }
+        
 
 
         //根据物体位置更新显示对象属性
