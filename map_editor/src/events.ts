@@ -43,6 +43,7 @@ module events {
                     info.onClick(info.displayObject);
                     break;
                 }
+                
             }
         };
 
